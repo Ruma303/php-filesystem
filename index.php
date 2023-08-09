@@ -88,8 +88,55 @@ if (rename("ftp://example.com/file1.txt", "ftp://example.com/file2.txt", $contex
 
 
 //$ unlink()
-if (unlink("./file2.txt")) {
+/* if (unlink("./file2.txt")) {
     echo "File eliminato con successo.";
 } else {
     echo "Eliminazione del file fallita.";
+} */
+
+
+//$ copy($source, $dest)
+/* if (copy('./file1.txt', './file2.txt')) {
+    echo 'File copiato con successo.';
+} else {
+    echo 'Copia del file fallita.';
 }
+ */
+
+
+//$ is_dir($filename)
+/* if (is_dir('./directory')) {
+    echo 'È una directory.';
+} else {
+    echo 'Non è una directory.';
+} */
+
+
+//$ scandir($dir)
+/* $files = scandir('./');
+echo '<pre>';
+print_r($files);
+echo '</pre><br>'; */
+
+
+//$ pathinfo($path)
+/* $info = pathinfo('./file1.txt');
+echo '<pre>';
+print_r($info);
+echo '</pre><br>'; */
+
+
+//$ mkdir($pathname)
+/* if (mkdir('./directory')) {
+    echo 'Directory creata con successo.';
+} else {
+    echo 'Creazione della directory fallita.';
+} */
+
+
+//$ rmdir()
+/* if (rmdir('./directory')) {
+    echo 'Directory rimossa con successo.';
+} else {
+    echo 'Rimozione della directory fallita.';
+} */
