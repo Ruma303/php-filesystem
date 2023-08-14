@@ -1,1 +1,14 @@
 Contenuto del file1.txt
+Contenuto del file1.txt
+Contenuto del file1.txt
+Contenuto del file1.txt
+Contenuto del file1.txt
+Contenuto del file1.txt
+Contenuto del file1.txt
+Contenuto del file1.txt
+Codice scritto da fwrite()
+Codice scritto da fwrite()
+Codice scritto da fwrite()
+Codice scritto da fwrite()
+Codice scritto da fwrite()
+Codice scritto da file_put_contents()

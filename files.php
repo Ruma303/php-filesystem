@@ -1,55 +1,83 @@
 <?php
 //% $_FILES
-/* echo '
-<pre>';
-print_r($_FILES);
-echo '</pre>'; */
 ?>
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live coding: php-files</title>
+    <title>Live coding: php-filesystem</title>
 </head>
+
 <body>
-    <form method="post" action=<?php echo $_SERVER['PHP_SELF']
-        ?> enctype="multipart/form-data">
-        <input type="file" name="file1">
-        <button type="submit" name="file-caricato" value="File caricato">
-            Carica</button>
-    </form> -->
+    <form method="POST" action=<?php echo $_SERVER['PHP_SELF'] ?> enctype="multipart/form-data">
+        <input type="file" name="file-caricato">
+        <button type="submit">Carica</button>
+    </form>
 
     <?php
-    //* Info sul file caricato
-    /* echo '<pre>';
-    print_r($_FILES);
-    echo '</pre>'; */
+    //? Controllo metodo HTTP === POST
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    /* if (isset($_POST['file-caricato'])) {
-        print_r($_POST);
-        echo "<h2>{$_POST['file-caricato']}</h2>";
+        //? Controllo file caricato senza errori
+        if (isset($_FILES['file-caricato']) && $_FILES['file-caricato']['error'] == 0) {
+            echo '<pre>';
+            print_r($_FILES['file-caricato']);
+            echo '</pre>';
 
-        //*  Percorso in cui il file caricato sarà salvato, nella cartella /uploads.
-        $uploadedPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads';
-        echo 'Percorso file caricato: <i>' . $uploadedPath . '</i><br><br>';
+            //* Raccolta informazioni
+            $fileTmpPath = $_FILES['file-caricato']['tmp_name'];
+            $fileName = $_FILES['file-caricato']['name'];
+            $fileSize = $_FILES['file-caricato']['size'];
+            $fileType = $_FILES['file-caricato']['type'];
+            $fileNameArray = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameArray));
 
-        //* Controlla se la cartella 'uploads' esiste. Se non esiste, viene creata.
-        if (!is_dir($uploadedPath)) {
-            mkdir($uploadedPath, 0755);
+            /* echo '<pre>';
+            print_r($fileNameArray);
+            echo '</pre>'; */
+
+            //echo $fileExtension = strtolower(end($fileNameArray));
+
+            //* Limitare i tipi di file caricabili
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES['file-caricato']['tmp_name']);
+            finfo_close($finfo);
+
+            $allowedMimeTypes = array('image/jpeg', 'image/png', 'application/pdf');
+            if (!in_array($mime, $allowedMimeTypes)) {
+                echo 'Caricamento non riuscito. I tipi di file permessi sono: '
+                . implode(", ", $allowedMimeTypes);
+                exit;
+            }
+
+            //* Creazione di un nuovo nome di file univoco
+            //echo time() . $fileName . '<br>';
+            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+            //echo $newFileName;
+
+
+            //* Controllo cartella di destinazione
+            $uploadFileDir = './uploads';
+            if (!is_dir($uploadFileDir)) {
+                mkdir($uploadFileDir, 0777, true);
+            }
+
+            //* Spostamento del file in ./uploads
+            $dest_path = $uploadFileDir . '/' . $newFileName;
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                echo 'Il file è stato caricato con successo.';
+            } else {
+                echo 'Si è verificato un errore durante lo spostamento del file nella directory di upload. Assicurati che la directory di upload sia scrivibile dal server web.';
+            }
+        } else {
+            echo 'Si è verificato un errore nel caricamento del file.
+            <br>Errore: ' . $_FILES['file-caricato']['error'];
         }
-
-        //* Spostamento del file
-        $uploadedImage = $uploadedPath . '/' . $_FILES['file1']['name'];
-        $tmpFile = $_FILES['file1']['tmp_name'];
-        move_uploaded_file($tmpFile, $uploadedImage);
-
-        //* Debugging
-        $result = <<<"RESULT"
-        Il file <strong> {$_FILES['file1']['name']} </strong>
-        è stato spostato al percorso: <br><i>$uploadedImage</i>
-        RESULT;
-        echo $result;
-    }  */?>
+    }
+    ?>
 </body>
+
 </html>
