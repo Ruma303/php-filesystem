@@ -149,3 +149,17 @@ echo '</pre><br>'; */
 } else {
     echo 'Rimozione della directory fallita.';
 } */
+
+
+//% Generatori
+/* $filename = 'file1.txt';
+function lines($filename) {
+    $file = fopen($filename, 'r');
+    while (($line = fgets($file)) !== false) {
+        yield $line;
+    }
+    fclose($file);
+}
+foreach (lines($filename) as $line) {
+    echo $line;
+} */
