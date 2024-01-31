@@ -17,6 +17,10 @@
     </form>
 
     <?php
+
+    //var_dump($_FILES);
+
+
     //? Controllo metodo HTTP === POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -45,6 +49,8 @@
             $mime = finfo_file($finfo, $_FILES['file-caricato']['tmp_name']);
             finfo_close($finfo);
 
+            //echo $mime;
+
             $allowedMimeTypes = array('image/jpeg', 'image/png', 'application/pdf');
             if (!in_array($mime, $allowedMimeTypes)) {
                 echo 'Caricamento non riuscito. I tipi di file permessi sono: '
@@ -72,7 +78,6 @@
                 if (!file_exists($file_info_path)) {
                     touch($file_info_path);
                 }
-
 
                 file_put_contents($file_info_path, "$fileName,$newFileName\n", FILE_APPEND);
                 echo 'Il file è stato caricato con successo.';
@@ -113,8 +118,6 @@
             <br>Errore: ' . $_FILES['file-caricato']['error'];
         }
     }
-
-
     ?>
 </body>
 
